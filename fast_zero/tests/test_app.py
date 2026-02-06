@@ -25,3 +25,20 @@ def test_read_root_return_html_ola_mundo():
         <h1>Olá mundo</h1>
     </body>
 </html>"""
+
+def test_create_user():
+    client = TestClient(app) # Arrange
+
+    response = client.post('/users/',
+        json={
+            'username': 'Gab',
+            'email': 'gabtx@gmail.com',
+            'password': 'secret'
+        }
+    ) # Act
+    assert response.status_code == HTTPStatus.CREATED # Assert
+    assert response.json() == {
+            'username': 'Gab',
+            'email': 'gabtx@gmail.com',
+            'id': 1
+        }

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from fast_zero.schemas import Message
+from fast_zero.schemas import *
 from http import HTTPStatus
 
 app = FastAPI()
@@ -20,3 +20,14 @@ def return_html():
         <h1>Olá mundo</h1>
     </body>
 </html>"""
+
+database = []
+
+@app.post('/users/',status_code=HTTPStatus.CREATED,response_model=UserPublic)
+def create_user(user:UserSchema):
+    user_with_id = UserDB(
+        id=len(database) + 1,
+        **user.model_dump()
+    )
+    database.append(user_with_id)
+    return user_with_id
